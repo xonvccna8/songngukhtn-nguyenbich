@@ -58,3 +58,5 @@ next-env.d.ts
 /RULES-*.txt
 /data-backup/
 *.zip
+
+/.vercel-sinh-backup/
