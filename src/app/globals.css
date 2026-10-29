@@ -1,0 +1,345 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ===== Bảng màu "Phòng thí nghiệm Vật lí" (docs/GIAO-DIEN.md) =====
+   Giữ TÊN biến cũ để mọi trang tự đổi màu theo:
+   blue = xanh điện (màu chính) · sun = vàng năng lượng · coral = đỏ cam (nhiệt, cảnh báo) · teal = xanh lam (nước, áp suất)
+   ink = xanh đêm (bảng đen phòng thí nghiệm) · paper = giấy kẻ ô xanh nhạt */
+@theme inline {
+  --color-ink: #0f1b3d;
+  --color-ink-tv: #0a1430;
+  --color-ink-2: #4a5878;
+  --color-paper: #f4f7ff;
+  --color-line: #e0e7f6;
+  --color-line-2: #cfd9ee;
+
+  --color-blue: #2f5bea;
+  --color-blue-dk: #1e40af;
+  --color-blue-soft: #e3ebff;
+  --color-sun: #ffb020;
+  --color-sun-dk: #c77800;
+  --color-sun-soft: #fff3d6;
+  --color-coral: #f2545b;
+  --color-coral-dk: #b91c3c;
+  --color-coral-soft: #ffe4e6;
+  --color-teal: #0891b2;
+  --color-teal-dk: #0e6e87;
+  --color-teal-soft: #ddf5fb;
+  --color-success-bg: #e8f8ee;
+  --color-success-fg: #0a7a44;
+  /* Phông: tiêu đề/con số · chữ thường · trình chiếu tivi */
+  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-be-vietnam);
+  --font-present: var(--font-lexend);
+  --font-heading: var(--font-bricolage);
+
+  /* Biến của shadcn/ui ánh xạ về bảng màu trên */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: #f4f7ff;
+  --foreground: #0f1b3d;
+  --card: #ffffff;
+  --card-foreground: #0f1b3d;
+  --popover: #ffffff;
+  --popover-foreground: #0f1b3d;
+  --primary: #2f5bea;
+  --primary-foreground: #ffffff;
+  --secondary: #eaf0ff;
+  --secondary-foreground: #0f1b3d;
+  --muted: #eaf0ff;
+  --muted-foreground: #4a5878;
+  --accent: #eaf0ff;
+  --accent-foreground: #0f1b3d;
+  --destructive: #f2545b;
+  --border: #e0e7f6;
+  --input: #cfd9ee;
+  --ring: #2f5bea;
+  --radius: 0.875rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-paper text-ink;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+}
+
+/* Song ngữ: tiếng Anh chữ thẳng màu nhấn, tiếng Việt xám nghiêng */
+@utility text-en {
+  color: var(--color-blue-dk);
+  font-style: normal;
+}
+@utility text-vi {
+  color: var(--color-ink-2);
+  font-style: italic;
+}
+
+/* Thẻ chuẩn: viền 2px, bo 20px */
+@utility card-lsn {
+  background: #fff;
+  border: 2px solid var(--color-line);
+  border-radius: 20px;
+}
+
+/* Nền chấm nhẹ cho các trang lớn */
+@utility bg-dots {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-ink) 9%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--r, 0deg));
+  }
+}
+@utility animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+@utility animate-blink {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: blink 4s infinite;
+}
+
+@keyframes shake-x {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+@utility animate-shake {
+  animation: shake-x 0.4s ease-in-out;
+}
+
+/* Đáp án đúng: nảy lên một nhịp */
+@keyframes pop-in {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@utility animate-pop {
+  animation: pop-in 0.35s ease-out;
+}
+
+/* ===== Hiệu ứng "Phòng thí nghiệm Vật lí" ===== */
+
+/* Nền giấy kẻ ô kĩ thuật + nút mạch điện (giữ tên lớp cũ bg-cells để các trang không phải sửa) */
+@utility bg-cells {
+  background-image:
+    radial-gradient(circle at 0 0, color-mix(in oklab, var(--color-blue) 22%, transparent) 2px, transparent 2.6px),
+    linear-gradient(color-mix(in oklab, var(--color-blue) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-blue) 8%, transparent) 1px, transparent 1px);
+  background-size:
+    96px 96px,
+    24px 24px,
+    24px 24px;
+}
+
+/* Tia sáng quét ngang (dải tiêu đề, nút chính) */
+@keyframes beam {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+@utility animate-beam {
+  background-image: linear-gradient(110deg, transparent 30%, color-mix(in oklab, #fff 55%, transparent) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: beam 3.2s linear infinite;
+}
+
+/* Tia sét nhấp nháy như dòng điện */
+@keyframes zap {
+  0%,
+  86%,
+  100% {
+    opacity: 1;
+  }
+  88%,
+  92% {
+    opacity: 0.35;
+  }
+  90% {
+    opacity: 1;
+  }
+}
+@utility animate-zap {
+  animation: zap 3.6s steps(1) infinite;
+}
+
+/* Vật dao động nhẹ (giữ tên animate-sway) */
+@keyframes sway {
+  0%,
+  100% {
+    transform: translateY(0) rotate(calc(var(--r, 0deg) - 8deg));
+  }
+  50% {
+    transform: translateY(-12px) rotate(calc(var(--r, 0deg) + 8deg));
+  }
+}
+@utility animate-sway {
+  transform-origin: bottom center;
+  animation: sway 7s ease-in-out infinite;
+}
+
+/* Bóng đèn "toả sáng": phồng nhẹ rồi xẹp */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+@utility animate-breathe {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* Quỹ đạo electron xoay chậm */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@utility animate-spin-slow {
+  animation: spin-slow 24s linear infinite;
+}
+
+/* Biểu tượng lắc nhẹ khi rê chuột vào thẻ cha (.group) */
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-10deg) scale(1.08);
+  }
+  75% {
+    transform: rotate(8deg) scale(1.08);
+  }
+}
+@utility hover-wiggle {
+  .group:hover & {
+    animation: wiggle 0.6s ease-in-out;
+  }
+}
+
+/* Ánh sáng xanh quanh thẻ khi rê chuột */
+@utility hover-glow {
+  transition:
+    box-shadow 0.25s,
+    transform 0.25s;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px -12px color-mix(in oklab, var(--color-blue) 45%, transparent);
+  }
+}
+
+/* Máy bật "giảm chuyển động" → tắt mọi hiệu ứng trang trí */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* In phiếu: ẩn mọi thứ trừ vùng in */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+  /* Vở ghi: mỗi bài sang trang mới, khối không bị cắt đôi */
+  .print-break {
+    break-before: page;
+  }
+  .print-avoid {
+    break-inside: avoid;
+  }
+}
